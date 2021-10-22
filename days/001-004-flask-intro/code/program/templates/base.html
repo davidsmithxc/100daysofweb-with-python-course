@@ -11,6 +11,20 @@
         <div class="mui-panel">Menu Bar - 
             <button class="mui-btn mui-btn--raised"><a href="/index">Home</a></button>
             <button class="mui-btn mui-btn--raised"><a href="/100Days">100 Days</a></button>
+            <button class="mui-btn mui-btn--raised"><a href="/truck">Truck</a></button>
+            <button class="mui-btn mui-btn--raised"><a href="/secret">SECRET!</a></button>
+            <div class="mui-dropdown">
+                <button class="mui-btn mui-btn--primary" data-mui-toggle="dropdown">
+                  Dropdown
+                  <span class="mui-caret"></span>
+                </button>
+                <ul class="mui-dropdown__menu">
+                  <li><a href="#">Option 1</a></li>
+                  <li><a href="#">Option 2</a></li>
+                  <li><a href="#">Option 3</a></li>
+                  <li><a href="#">Option 4</a></li>
+                </ul>
+            </div>
         </div>
         <hr>
         {% block content %}{% endblock %}
