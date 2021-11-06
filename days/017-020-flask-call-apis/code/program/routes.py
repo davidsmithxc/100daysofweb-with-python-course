@@ -35,6 +35,18 @@ def pokemon():
     return render_template('pokemon.html',
                            pokemon=pokemon)
 
+@app.route('/trivia')                           
+def trivia():
+    question, answer = get_trivia_question()
+    return render_template('trivia.html',
+                            question=question,
+                            answer=answer)
+
+def get_trivia_question():
+    r = requests.get('https://jservice.io/api/random')
+    data = r.json()
+    return data[0]['question'], data[0]['answer']
+
 
 def get_chuck_joke():
     r = requests.get('https://api.chucknorris.io/jokes/random')
