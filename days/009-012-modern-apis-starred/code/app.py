@@ -1,4 +1,4 @@
-from collections import Counter, namedtuple
+from collections import Counter, namedtuple, defaultdict
 import csv
 import re
 from typing import List
@@ -38,6 +38,7 @@ def _load_marvel_data(data=DATA):
 
 
 data = list(_load_marvel_data())
+characters = defaultdict(dict)
 characters = {character.pid: character._asdict() for character in data}
 
 VALID_SIDS = set([value['sid'] for key, value in characters.items()])
@@ -64,7 +65,11 @@ def list_characters() -> List[MarvelCharacter]:
     return [MarvelCharacter(character) for key, character in sorted(characters.items())]
 
 def create_character(character: MarvelCharacter) -> JSONResponse:
-    pass
+    character_id = max(characters.keys())+1
+    character.pid = character_id
+    characters[character_id] = character
+
+    return JSONResponse(MarvelCharacter(character), status_code=201)
 
 def get_character(character_id: int) -> JSONResponse:
     character = characters.get(character_id)
@@ -75,10 +80,21 @@ def get_character(character_id: int) -> JSONResponse:
     return JSONResponse(MarvelCharacter(character), status_code=200)
 
 def update_character(character_id: int, character: MarvelCharacter) -> JSONResponse:
-    pass
+    if not characters.get(character_id):
+        error = {'error': CHARACTER_NOT_FOUND}
+        return JSONResponse(error, status_code=404)
+
+    character.id = character_id
+    characters[character_id] = character
+    return JSONResponse(MarvelCharacter(character), status_code=200)
 
 def delete_character(character_id: int) -> JSONResponse:
-    pass
+    if not characters.get(character_id):
+        error = {'error': CHARACTER_NOT_FOUND}
+        return JSONResponse(error, status_code=404)
+    
+    del characters[character_id]
+    return JSONResponse({}, status_code=204)
 
 routes = [
     Route('/', method='GET', handler=list_characters),
@@ -92,5 +108,3 @@ app = App(routes=routes)
 
 if __name__ == '__main__':
     app.serve('127.0.0.1', 5000, debug=True)
-    # for key, val in characters.items():
-    #     print(val)
