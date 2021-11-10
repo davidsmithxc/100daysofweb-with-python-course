@@ -29,11 +29,18 @@ def chuck():
 @app.route('/pokemon', methods=['GET', 'POST'])
 def pokemon():
     pokemon = []
+    valid = False
     if request.method == 'POST' and 'pokecolour' in request.form:
         colour = request.form.get('pokecolour')
-        pokemon = get_poke_colours(colour)
+        valid_colours = get_valid_poke_colours()
+        valid = colour in valid_colours
+        if valid:
+            pokemon = get_poke_colours(colour)
+        else:
+            pokemon = valid_colours
     return render_template('pokemon.html',
-                           pokemon=pokemon)
+                           pokemon=pokemon,
+                           valid_colour=valid)
 
 @app.route('/trivia')                           
 def trivia():
@@ -54,12 +61,21 @@ def get_chuck_joke():
     return data['value']
 
 
+def get_valid_poke_colours():
+        r = requests.get('https://pokeapi.co/api/v2/pokemon-color/')
+        colour_data = r.json()
+        valid_colours = [each['name'] for each in colour_data['results']]
+        return valid_colours
+
 def get_poke_colours(colour):
     r = requests.get('https://pokeapi.co/api/v2/pokemon-color/' + colour.lower())
     pokedata = r.json()
     pokemon = []
 
     for i in pokedata['pokemon_species']:
-        pokemon.append(i['name'])
+        r = requests.get(i['url'])
+        url_data = r.json()
+        flavor_text = url_data['flavor_text_entries'][0]['flavor_text']
+        pokemon.append((i['name'], flavor_text))
 
     return pokemon
