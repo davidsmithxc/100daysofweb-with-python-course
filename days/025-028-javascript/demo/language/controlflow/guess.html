@@ -21,8 +21,40 @@
   }
 
   const secretNumber = getRandomInt(1, 15);
+  let numGuesses = 0;
 
   // you code
+  while (true) {
+    let guess = prompt('Enter a number: ');
+    guess = parseInt(guess, 10);
+
+    if ((guess == null) || (guess == 'q')) {
+      console.log('quitting');
+      break;
+    }
+
+    if (typeof(guess) != "number") {
+      console.log('please enter a number');
+      continue;
+    }
+
+    if (guess < secretNumber) {
+      console.log('too low');
+      ++numGuesses;
+    } else if (guess > secretNumber){
+      console.log('too high');
+      ++numGuesses;
+    } else if (guess === secretNumber) {
+      console.log('You got it!');
+      break;
+    }
+
+    if (numGuesses >= 5) {
+      console.log('You lose!');
+      break;
+    }
+
+  }
 
   </script>
 </body>

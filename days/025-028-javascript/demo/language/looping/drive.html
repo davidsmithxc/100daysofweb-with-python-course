@@ -24,6 +24,18 @@
   const ages = [14, 33, 17, 18, 25, 7];
 
   // you code
+  for (let i in names) {
+    let status = null;
+
+    if (ages[i] >= minAge) {
+      status = "allowed";
+    } else {
+      status = "not allowed";
+    }
+
+    let message = `${names[i]} (${ages[i]}) is ${status} to drive`;
+    console.log(message)
+  }
 
   </script>
 </body>

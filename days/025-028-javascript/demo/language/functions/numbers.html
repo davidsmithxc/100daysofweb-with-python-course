@@ -10,7 +10,16 @@
     called range to return that range of integers */
 
   function sum(numbers){
-    // you code
+    let result = 0;
+    
+    if (numbers == undefined) {
+      numbers = [...Array(101).keys()];
+    }
+    
+    for (let i in numbers) {
+      result += numbers[i];
+    }
+    return result;
   }
 
 
