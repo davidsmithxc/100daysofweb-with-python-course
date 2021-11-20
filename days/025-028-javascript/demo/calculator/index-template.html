@@ -35,10 +35,38 @@
   </form>
 
   <div id="result"></div>
+  <h2></h2>
 
   <script type="text/javascript">
   function doCalculation(){
     // you code
+    let num1 = document.getElementById('num1').value;
+    let num2 = document.getElementById('num2').value;
+    let operator = document.getElementById('operator').value;
+
+    console.log(`doc num1 ${num1}`);
+    console.log(`doc num2 ${num2}`);
+    console.log(`doc op ${operator}`);
+    
+    num1 = parseInt(num1);
+    num2 = parseInt(num2);
+
+    console.log(`parse num1 ${num1}`);
+    console.log(`parse num2 ${num2}`);
+
+    if (isNaN(num1) || isNaN(num2)) {
+      result = "Only integers accepted!";
+    } else if (operator === '+') {
+      result = num1 + num2;
+    } else if (operator === '-') {
+      result = num1 - num2;
+    } else if (operator === '*') {
+      result = num1 * num2;
+    } else if (operator === '/') {
+      result = num1 / num2;
+    }
+
+    document.getElementById("result").innerHTML = result;
   }
   </script>
 
